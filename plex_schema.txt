@@ -1,0 +1,110 @@
+
+Tables
+
+media_parts
+:id
+:media_item_id
+:directory_id
+:file           - file name/location of file
+:index
+:size
+:duration
+:created_at
+:updated_at
+:deleted_at
+
+media_items
+:id
+:library_section_id
+:section_location_id
+:metadata_item_id
+:type_id
+:width
+:height
+:size
+:duration
+:bitrate
+:container
+:video_codec
+:audio_codec
+:display_aspect_ratio
+:frames_per_second
+:audio_channels
+:interlaced
+:source
+:hints
+:display_offset
+:settings
+:created_at
+:updated_at
+:optimized_for_streaming
+:deleted_at
+:media_analysis_version
+:sample_aspect_ratio
+:extra_data
+:proxy_type
+
+sqlite> select * from media_parts where file LIKE '%Cell%';
+4634|2504|4131|b0294e96a04944bd50fc16fa401a0181196790b4|4e8418b5eddac33d|/volume1/video/TV/Agents of SHIELD/Season 1/Marvels.Agents.of.S.H.I.E.L.D.S01E17.HDTV.x264-EXCELLENCE.mp4||219754481|2503850|2014-12-08 18:59:51|2014-04-08 21:30:09||ma%3Acontainer=mp4&ma%3Ahas64bitOffsets=0&ma%3AoptimizedForStreaming=0
+8250|6203|4663|b9cf8b4258627edcbd769e13965f116aff63526d|0d3433136ce60b9c|/volume1/video/Movies/low/Cellular (2004)/Cellular (2004).avi||733827072|5639217|2014-08-01 10:51:17|2013-10-27 00:20:17||ma%3Acontainer=avi
+10410|7729|7158|ea3bee5e819372c20fcf15d5aa91e41642b7582a|fe575144fb783b8b|/volume1/video/Movies/_new/Cell (2016)/Cell (2016).mkv||3274115619|5883936|2016-06-14 22:07:12|2016-06-12 09:37:17||ma%3Acontainer=mkv&ma%3AhasThumbnail=1&ma%3AvideoProfile=main
+sqlite> select * from media_items where id = 7729;
+7729|1|16|7648||1280|530|3274115619|5883936|4451599|mkv|h264|ac3|2.41509437561035|23.9760246276855|6|||name=Cell&year=2016|0||2016-06-14 22:07:12|2016-06-12 09:37:17|||5||ma%3AvideoProfile=main|
+
+
+
+
+CREATE TABLE "library_sections" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_id" integer, "name" varchar(255), "name_sort" varchar(255) COLLATE NOCASE, "section_type" integer, "language" varchar(255), "agent" varchar(255), "scanner" varchar(255), "user_thumb_url" varchar(255), "user_art_url" varchar(255), "user_theme_music_url" varchar(255), "public" boolean, "created_at" datetime, "updated_at" datetime, "scanned_at" datetime, "display_secondary_level" boolean, "user_fields" varchar(255), "query_xml" text, "query_type" integer, "uuid" varchar(255), 'changed_at' integer(8) default '0');
+CREATE TABLE "section_locations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "root_path" varchar(255), "available" boolean DEFAULT 't', "scanned_at" datetime, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "directories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "parent_directory_id" integer, "path" varchar(255), "created_at" datetime, "updated_at" datetime, "deleted_at" datetime);
+CREATE TABLE "stream_types" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255));
+CREATE TABLE "metadata_item_views" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "guid" varchar(255), "metadata_type" integer, "library_section_id" integer, "grandparent_title" varchar(255), "parent_index" integer, "parent_title" varchar(255), "index" integer, "title" varchar(255), "thumb_url" varchar(255), "viewed_at" datetime);
+CREATE TABLE "media_metadata_mappings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "media_guid" varchar(255), "metadata_guid" varchar(255), "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "plugins" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "identifier" varchar(255), "framework_version" integer, "access_count" integer, "installed_at" datetime, "accessed_at" datetime, "modified_at" datetime);
+CREATE TABLE "plugin_prefixes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "plugin_id" integer, "name" varchar(255), "prefix" varchar(255), "art_url" varchar(255), "thumb_url" varchar(255), "titlebar_url" varchar(255), "share" boolean, "has_store_services" boolean, "prefs" boolean);
+CREATE TABLE "tags" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "metadata_item_id" integer, "tag" varchar(255) COLLATE NOCASE, "tag_type" integer, "user_thumb_url" varchar(255), "user_art_url" varchar(255), "user_music_url" varchar(255), "created_at" datetime, "updated_at" datetime, "tag_value" integer, 'extra_data' varchar(255));
+CREATE TABLE "taggings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "metadata_item_id" integer, "tag_id" integer, "index" integer, "text" varchar(255), "time_offset" integer, "end_time_offset" integer, "thumb_url" varchar(255), "created_at" datetime, 'extra_data' varchar(255));
+CREATE TABLE "metadata_relations" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "metadata_item_id" integer, "related_metadata_item_id" integer, "relation_type" integer, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "view_settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "client_type" varchar(255), "view_group" varchar(255), "view_id" integer, "sort_id" integer, "sort_asc" boolean, "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "library_section_permissions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "account_id" integer, "permission" integer);
+CREATE TABLE "plugin_permissions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "plugin_id" integer, "account_id" integer, "permission" integer);
+CREATE TABLE "metadata_item_settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "guid" varchar(255), "rating" float, "view_offset" integer, "view_count" integer, "last_viewed_at" datetime, "created_at" datetime, "updated_at" datetime, 'skip_count' integer DEFAULT 0, 'last_skipped_at' datetime DEFAULT NULL, 'changed_at' integer(8) default '0');
+CREATE TABLE "library_timeline_entries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "metadata_item_id" integer, "state" integer, "updated_at" datetime);
+CREATE TABLE "accounts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "hashed_password" varchar(255), "salt" varchar(255), "created_at" datetime, "updated_at" datetime, "default_audio_language" varchar(255), "default_subtitle_language" varchar(255), "auto_select_subtitle" boolean DEFAULT 't', "auto_select_audio" boolean DEFAULT 't');
+CREATE TABLE "media_item_settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "media_item_id" integer, "settings" varchar(255), "created_at" datetime, "updated_at" datetime);
+CREATE TABLE "media_part_settings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "account_id" integer, "media_part_id" integer, "selected_audio_stream_id" integer, "selected_subtitle_stream_id" integer, "settings" varchar(255), "created_at" datetime, "updated_at" datetime, 'changed_at' integer(8) default '0');
+CREATE TABLE "media_streams" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "stream_type_id" integer, "media_item_id" integer, "url" varchar(255), "codec" varchar(255), "language" varchar(255), "created_at" datetime, "updated_at" datetime, "index" integer, "media_part_id" integer, "channels" integer, "bitrate" integer, "url_index" integer, "default" boolean DEFAULT 0, "forced" boolean DEFAULT 0, "extra_data" varchar(255));
+CREATE TABLE "synchronization_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "client_identifier" varchar(255), "sync_list_id" integer(8), "sync_item_id" integer(8), "item_uri" varchar(255), "num_parts" integer, "state" integer, "state_context" integer, "extra_data" varchar(255));
+CREATE TABLE "media_items" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "section_location_id" integer, "metadata_item_id" integer, "type_id" integer, "width" integer, "height" integer, "size" integer(8), "duration" integer, "bitrate" integer, "container" varchar(255), "video_codec" varchar(255), "audio_codec" varchar(255), "display_aspect_ratio" float, "frames_per_second" float, "audio_channels" integer, "interlaced" boolean, "source" varchar(255), "hints" varchar(255), "display_offset" integer, "settings" varchar(255), "created_at" datetime, "updated_at" datetime, "optimized_for_streaming" boolean, "deleted_at" datetime, "media_analysis_version" integer DEFAULT 0, "sample_aspect_ratio" float, "extra_data" varchar(255), 'proxy_type' integer);
+CREATE TABLE "metadata_items" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "library_section_id" integer, "parent_id" integer, "metadata_type" integer, "guid" varchar(255), "media_item_count" integer, "title" varchar(255), "title_sort" varchar(255) COLLATE NOCASE, "original_title" varchar(255), "studio" varchar(255), "rating" float, "rating_count" integer, "tagline" varchar(255), "summary" text, "trivia" text, "quotes" text, "content_rating" varchar(255), "content_rating_age" integer, "index" integer, "absolute_index" integer, "duration" integer, "user_thumb_url" varchar(255), "user_art_url" varchar(255), "user_banner_url" varchar(255), "user_music_url" varchar(255), "user_fields" varchar(255), "tags_genre" varchar(255), "tags_collection" varchar(255), "tags_director" varchar(255), "tags_writer" varchar(255), "tags_star" varchar(255), "originally_available_at" datetime, "available_at" datetime, "expires_at" datetime, "refreshed_at" datetime, "year" integer, "added_at" datetime, "created_at" datetime, "updated_at" datetime, "deleted_at" datetime, "tags_country" varchar(255), "extra_data" varchar(255), "hash" varchar(255), 'audience_rating' float, 'changed_at' integer(8) default '0', 'resources_changed_at' integer(8) default '0');
+CREATE TABLE "cloudsync_files" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "device_identifier" varchar(255), "original_url" varchar(255), "provider" varchar(255), "new_key" varchar(255), "query_string" varchar(255));
+CREATE TABLE 'play_queues' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'client_identifier' varchar(255), 'account_id' integer, 'playlist_id' integer, 'sync_item_id' integer, 'play_queue_generator_id' integer, 'generator_start_index' integer, 'generator_end_index' integer, 'generator_items_count' integer, 'generator_ids' blob, 'seed' integer, 'current_play_queue_item_id' integer, 'last_added_play_queue_item_id' integer, 'version' integer, 'created_at' datetime, 'updated_at' datetime, 'metadata_type' integer, 'total_items_count' integer, 'generator_generator_ids' blob);
+CREATE TABLE 'play_queue_items' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'play_queue_id' integer, 'metadata_item_id' integer, 'order' float, 'up_next' boolean, 'play_queue_generator_id' integer);
+CREATE TABLE 'play_queue_generators' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'playlist_id' integer, 'metadata_item_id' integer, 'uri' varchar(255), 'limit' integer, 'continuous' boolean, 'order' float, 'created_at' datetime NOT NULL, 'updated_at' datetime NOT NULL, 'changed_at' integer(8) default '0', 'recursive' boolean, 'type' integer, 'extra_data' varchar(255));
+CREATE TABLE 'metadata_item_accounts' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'account_id' integer, 'metadata_item_id' integer);
+CREATE TABLE 'synced_play_queue_generators' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'sync_list_id' integer(8), 'sync_item_id' integer(8), 'playlist_id' integer, 'play_queue_generator_id' integer, 'changed_at' integer(8), 'state' integer, 'state_context' integer, 'first_packaged_at' integer(8));
+CREATE TABLE 'synced_ancestor_items' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'sync_list_id' integer(8), 'metadata_item_id' integer, 'changed_at' integer(8), 'reference_count' integer, 'first_packaged_at' integer(8));
+CREATE TABLE 'synced_library_sections' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'sync_list_id' integer(8), 'library_section_id' integer, 'changed_at' integer(8), 'reference_count' integer, 'first_packaged_at' integer(8));
+CREATE TABLE 'synced_metadata_items' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'sync_list_id' integer(8), 'sync_item_id' integer(8), 'metadata_item_id' integer, 'changed_at' integer(8), 'first_packaged_at' integer(8), 'state' integer, 'state_context' integer, 'selected_media_id' integer, 'selected_part_id' integer, 'media_decision' integer, 'file_size' integer(8), 'media_analysis_extra_data' varchar(255));
+CREATE TABLE 'sync_schema_versions' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'version' integer, 'changed_at' integer(8));
+CREATE TABLE 'versioned_metadata_items' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'metadata_item_id' integer, 'generator_id' integer, 'target_tag_id' integer, 'state' integer, 'state_context' integer, 'selected_media_id' integer, 'version_media_id' integer, 'media_decision' integer, 'file_size' integer(8));
+CREATE TABLE 'devices' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'identifier' varchar(255), 'name' varchar(255), 'created_at' datetime, 'updated_at' datetime);
+CREATE TABLE 'statistics_bandwidth' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'account_id' integer, 'device_id' integer, 'timespan' integer, 'at' datetime, 'lan' boolean, 'bytes' integer(8));
+CREATE TABLE 'statistics_media' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'account_id' integer, 'device_id' integer, 'timespan' integer, 'at' datetime, 'metadata_type' integer, 'count' integer, 'duration' integer);
+CREATE TABLE 'preferences' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'name' varchar(255), 'value' varchar(255));
+CREATE TABLE "spellfix_metadata_titles_vocab"(
+  id INTEGER PRIMARY KEY,
+  rank INT,
+  langid INT,
+  word TEXT,
+  k1 TEXT,
+  k2 TEXT
+);
+CREATE TABLE "spellfix_tag_titles_vocab"(
+  id INTEGER PRIMARY KEY,
+  rank INT,
+  langid INT,
+  word TEXT,
+  k1 TEXT,
+  k2 TEXT
+);

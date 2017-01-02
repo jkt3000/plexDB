@@ -1,0 +1,2 @@
+movie_template: /{{title}} ({{year}}) [{{resolution}}|{{sound}}] {% if comments -%}[{{comments}}]{% end %}/{{title}} ({{year}}) [{{resolution}}|{{sound}}] {% if comments -%}[{{comments}}]{% end %}.{{ext}}
+tv_template: /{{title}} S{{season}}/{{title}} S{{season}}E{{episode}} [{{resolution}}|{{sound}}.{{ext}}
