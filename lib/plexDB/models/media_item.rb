@@ -47,22 +47,8 @@ class MediaItem < ActiveRecord::Base
 
   delegate :title, :year, to: :metadata_item
 
-  def options
-    "#{screen_size}|#{audio_codec}-#{audio_channels}ch"
-  end
-
-  def screen_size
-    case height 
-    when (0..480)
-      "480p"
-    when (481..720)
-      "720p"
-    when (721..1080)
-      "1080p"
-    when (1081..2160)
-      "HQ"
-    else
-    end
+  def dimension
+    "#{width}x#{height}"
   end
 
   def bitrate

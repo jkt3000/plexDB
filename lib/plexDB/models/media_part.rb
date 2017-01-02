@@ -20,7 +20,7 @@ class MediaPart < ActiveRecord::Base
   belongs_to :media_item
   belongs_to :directory
 
-  delegate :title, :year, :options, to: :media_item
+  delegate :title, :year, :width, :height, :dimension, :type, to: :media_item
 
   def path
     File.dirname(file)
@@ -32,13 +32,5 @@ class MediaPart < ActiveRecord::Base
 
   def ext
     File.extname(file).gsub(/\./,'')
-  end
-
-  def comment
-    if filename.downcase.match(/extended/)
-      "Extended"
-    elsif filename.downcase.match(/director/) && filename.downcase.match(/cut/)
-      "Directors Cut"
-    end
   end
 end

@@ -39,7 +39,8 @@ module PlexDB
   end
 
   def find_by_filename(filename)
-    MediaItem.where("file like ?", "%#{filename}")
+    result = MediaPart.where("file like ?", "%#{filename}%").first
+    PlexModel.create_from_media_part(result) if result
   end
 
 
