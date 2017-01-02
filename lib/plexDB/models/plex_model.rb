@@ -61,4 +61,17 @@ class PlexModel
     end
   end
 
+  def to_liquid
+    {
+      title: title,
+      year: year,
+      resolution: resolution,
+      ext: ext,
+      filename: filename,
+      path: path,
+      season: "%02d" % season.to_i,
+      episode: "%02d" % episode.to_i     
+    }.stringify_keys
+  end
+
 end

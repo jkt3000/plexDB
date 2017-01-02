@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord"
   spec.add_dependency "activemodel"
   spec.add_dependency "activesupport"
+  spec.add_dependency 'liquid'
   spec.add_dependency "sqlite3"
   spec.add_dependency 'safe_attributes'
   spec.add_dependency 'thor'

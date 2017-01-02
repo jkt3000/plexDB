@@ -4,6 +4,7 @@ require 'yaml'
 require 'sqlite3'
 require 'active_record'
 require 'active_support'
+require 'liquid'
 require "plexDB/version"
 Dir["./lib/plexDB/models/*"].each {|file| require file }
 
@@ -33,16 +34,20 @@ module PlexDB
 
   def find_by_title(title)
     return nil unless result = MetadataItem.where(title: title)
-
     result
-
   end
 
   def find_by_filename(filename)
-    result = MediaPart.where("file like ?", "%#{filename}%").first
+    result = MediaPart.where("file like ?", "%#{filename}").first
     PlexModel.create_from_media_part(result) if result
   end
 
+  def tv_template
+    @tv_template ||= Liquid::Template.parse(SETTINGS['tv_template'])
+  end
 
+  def movie_template
+    @movie_template ||= Liquid::Template.parse(SETTINGS['movie_template'])
+  end
 
 end
