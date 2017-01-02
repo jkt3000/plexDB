@@ -39,13 +39,13 @@ class MediaItem < ActiveRecord::Base
   has_many :media_parts
   belongs_to :libary_section
   belongs_to :metadata_item
-  belongs_to :type
   
   # :file - absolute filename
   # :size - in bytes
   # :duration - in seconds
 
-  delegate :title, :year, to: :metadata_item
+  delegate :title, :year, :type, to: :metadata_item
+
 
   def dimension
     "#{width}x#{height}"

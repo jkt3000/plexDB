@@ -1,5 +1,8 @@
 class PlexModel
-  attr_reader :title, :year, :dimension, :ext, :type, :filename, :path, :season, :episode
+  attr_reader :title, :year, :dimension, :ext, :type, :filename, :path, :season, :episode,
+              :media_part,
+              :metadata
+
 
   def initialize(params)
     params = ActiveSupport::HashWithIndifferentAccess.new(params)
@@ -13,6 +16,9 @@ class PlexModel
 
     @season  = params.fetch(:season, nil)
     @episode = params.fetch(:episode, nil)
+
+    @media_part = params.fetch(:media_part, nil)
+    @metadata   = params.fetch(:metadata, nil)
   end
 
   # we can have lots of versions...
@@ -20,6 +26,7 @@ class PlexModel
   end
 
   def self.create_from_media_part(media_part)
+    metadata = media_part.media_item.metadata_item
     params = {
       title: media_part.title,
       year:  media_part.year,
@@ -28,14 +35,15 @@ class PlexModel
       type:  media_part.type,
       filename: media_part.filename,
       path: media_part.path,
+      media_part: media_part,
+      metadata: metadata
     }
-    if media_part.type == 'tv'
-      params.merge!({season: media_part.season, episode: media_part.episode})
+    if media_part.type.upcase == 'TV'
+      params.merge!({season: metadata.season_number, episode: metadata.episode_number})
     end
 
     PlexModel.new(params)
   end
-
 
   # helpful attributes
 

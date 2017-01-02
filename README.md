@@ -86,3 +86,12 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+
+# notes
+
+To grab details of the TV show, given a metadata_item,
+the season is where the metadata_item = MetadataItem.where(id: metadata_item.parent_id, metadata_type: 3), metadata_item.index is the season #
+name of the show is the season's metadata_item.parent_id and type = 2
+
+metadata.type  1 - movie? 
+              2  - show? 3 - season, 4 is episode?
