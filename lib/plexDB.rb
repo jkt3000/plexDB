@@ -4,16 +4,18 @@ require 'yaml'
 require 'sqlite3'
 require 'active_record'
 require 'active_support'
+require 'active_support/core_ext/numeric'
 require 'liquid'
 require "plexDB/version"
-Dir["./lib/plexDB/models/*"].each {|file| require file }
+require 'plexDB/templates'
+require 'plexDB/renamer'
+Dir[File.join(File.dirname(__FILE__), "plexDB/models/*")].each {|file| require_relative file }
 
 module PlexDB
-  # Your code goes here...
-  CONFIG_FILE    = "~/.plexDB_config.yml"
-  DEFAULT_CONFIG = "./config/plexDB.yml"
 
-  SETTINGS = begin
+  CONFIG_FILE    = "~/.plexDB_config.yml"
+  DEFAULT_CONFIG = File.join(File.dirname(__FILE__), "../config/plexDB.yml")
+  SETTINGS       = begin
     default_config = YAML.load(File.open(DEFAULT_CONFIG).read)
     custom_config = if File.exists?(File.expand_path(CONFIG_FILE))
       YAML.load(File.open(File.expand_path(CONFIG_FILE)).read)
@@ -41,13 +43,4 @@ module PlexDB
     result = MediaPart.where("file like ?", "%#{filename}").first
     PlexModel.create_from_media_part(result) if result
   end
-
-  def tv_template
-    @tv_template ||= Liquid::Template.parse(SETTINGS['tv_template'])
-  end
-
-  def movie_template
-    @movie_template ||= Liquid::Template.parse(SETTINGS['movie_template'])
-  end
-
 end

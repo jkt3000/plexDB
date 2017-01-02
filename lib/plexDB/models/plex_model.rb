@@ -63,7 +63,7 @@ class PlexModel
 
   def to_liquid
     {
-      title: title,
+      title: title.gsub(/\//, "_"),
       year: year,
       resolution: resolution,
       ext: ext,
