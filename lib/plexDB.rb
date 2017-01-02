@@ -29,4 +29,19 @@ module PlexDB
     :database => SETTINGS['database']
   })
 
+  extend self
+
+  def find_by_title(title)
+    return nil unless result = MetadataItem.where(title: title)
+
+    result
+
+  end
+
+  def find_by_filename(filename)
+    MediaItem.where("file like ?", "%#{filename}")
+  end
+
+
+
 end
