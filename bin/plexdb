@@ -22,9 +22,9 @@ class PlexDBCLI < Thor
     require_confirmation = !options.fetch(:force, false)
     preview_only         = options.fetch(:preview, false)
 
-    p files
     renamer = PlexDB::Renamer.new(curr_path: curr_path, preview_only: preview_only, require_confirmation: require_confirmation)
     files.each do |file|
+      next unless File.exist?(file)
       renamer.rename(file)
     end
   end

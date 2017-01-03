@@ -23,7 +23,9 @@ module PlexDB
       old_path = File.dirname(file)
 
 
-      puts "Processing #{new_file}"     
+      puts "\n#{file}"
+      puts "="*80
+      puts "Plex Record: #{new_file}"
       make_new_path(new_path)
       move_video_file(file, File.join(new_path, new_file))
       if old_path == curr_path
@@ -33,11 +35,10 @@ module PlexDB
         delete_old_path(old_path)
       end
       puts "-"*80
-      puts "\n\n"
     end
 
     def make_new_path(path)
-      puts "Make new path: #{path}"
+      puts "=== New path: #{path}"
       if preview_only?
         puts "  mkdir -p #{path}"
       else
@@ -55,7 +56,10 @@ module PlexDB
 
     # handle case where src file is not a directory!
     def move_sub_files(src_path, dest_path)
-      puts "Move subtitle files: #{src_path} => #{dest_path}"
+      puts "=== Move subtitle files"
+      puts "    from: #{src_path}"
+      puts "    to:   #{dest_path}"
+
       files = Dir[File.join(src_path, "**/*")]
       files.each do |file|
         next unless SUB_TYPES.include?(File.extname(file))
@@ -64,7 +68,7 @@ module PlexDB
     end
 
     def delete_old_path(path)
-      puts "Delete old path: #{path}"
+      puts "=== Delete path: #{path}"
       files = Dir[File.join(path, "**/*")]
       files.each do |file|
         if valid_file?(file)
@@ -76,7 +80,7 @@ module PlexDB
       if preview_only?
         puts "  rm -rf #{path}"
       else
-        #FileUtils.rm_rf path
+        FileUtils.rm_rf path
       end
     end
 
@@ -111,7 +115,9 @@ module PlexDB
     end
 
     def move_file(src, dest, overwrite: false)
-      puts "Move file: #{src} => #{dest}"
+      puts "=== Move file"
+      puts "    from: #{src}"
+      puts "    to:   #{dest}"
 
       new_dest = valid_new_filename(dest)
       if preview_only?
