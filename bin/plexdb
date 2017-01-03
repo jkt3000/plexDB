@@ -25,7 +25,8 @@ class PlexDBCLI < Thor
       force: options.fetch(:force, false), 
       preview: options.fetch(:preview, false) 
     }
-    PlexDB::Renamer.rename(files, params)
+    renamer = PlexDB::Renamer.new(curr_path, force: options.fetch(:force, false), preview: options.fetch(:preview, false))
+    renamer.rename(files)
   end
 end
 
