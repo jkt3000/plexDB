@@ -1,5 +1,6 @@
 module PlexDB
   require 'fileutils'
+  require 'io/console'
 
   class Renamer
 
@@ -26,6 +27,20 @@ module PlexDB
       puts "\n#{file}"
       puts "="*80
       puts "Plex Record: #{new_file}"
+
+      if file == File.join(new_path, new_file)
+        puts "No change required...skippping"
+        return
+      end
+
+      if require_confirmation?
+        puts "Moving #{file} => #{File.join(new_path, new_file)}"
+        puts "Continue? [y/n]"
+        
+        value = STDIN.getch
+        return unless value.downcase == "y"
+      end
+
       make_new_path(new_path)
       move_video_file(file, File.join(new_path, new_file))
       if old_path == curr_path

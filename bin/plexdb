@@ -8,19 +8,31 @@ require_relative '../lib/plexDB'
 class PlexDBCLI < Thor
 
   desc "rename <file|path>", "Renames file based on Plex DB entry"
-  method_option :template, aliases: "-t", desc: "Output file using specified liquid template format"
-  method_option :force, aliases: '-f', desc: "Force renaming, without prompting for confirmation"
-  method_option :preview, aliases: '-p', desc: "Only previews the changes that would be made, does not make changes."
-  method_option :target_dir, aliases: '-d', desc: "Specify target root directory to save renamed files in"
-  
+  method_option :template, 
+                aliases: "-t", 
+                desc: "Output file using specified liquid template format"
+  method_option :force, 
+                aliases: '-f', 
+                default: false,
+                type: :boolean,
+                desc: "Force renaming, without prompting for confirmation"
+  method_option :preview, 
+                aliases: '-p', 
+                default: false,
+                type: :boolean,
+                desc: "Only previews the changes that would be made, does not make changes."
+  method_option :target_dir, 
+                aliases: '-d', 
+                desc: "Specify target root directory to save renamed files in"
+
   def rename(file)
     curr_path = Dir.pwd
     file = File.expand_path(file)
     files = []
     files = File.exist?(file) && !File.directory?(file) ? [file] : Dir["#{file}/**/*"]
 
-    require_confirmation = !options.fetch(:force, false)
-    preview_only         = options.fetch(:preview, false)
+    require_confirmation = !options.fetch(:force)
+    preview_only         = options.fetch(:preview)
 
     renamer = PlexDB::Renamer.new(curr_path: curr_path, preview_only: preview_only, require_confirmation: require_confirmation)
     files.each do |file|
