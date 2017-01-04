@@ -1,2 +1,2 @@
 movie_template: "{{title}} ({{year}}) [{{resolution}}]{% if comments -%}[{{comments}}]{% endif %}/{{title}} ({{year}}) [{{resolution}}]{% if comments -%}[{{comments}}]{% endif %}.{{ext}}"
-tv_template: "{{title}} Season {{season}}/{{title}} S{{season}}E{{episode}} [{{resolution}}].{{ext}}"
+tv_template: "{{title}} S{{season}}/{{title}} S{{season}}E{{episode}} [{{resolution}}].{{ext}}"

@@ -6,7 +6,7 @@ module PlexDB
 
     VIDEO_TYPES = %w| .mp4 .mkv .avi .divx |
     SUB_TYPES   = %w| .sub .idx .srt |
-    MIN_SIZE    = 200.megabytes
+    MIN_SIZE    = 100.megabytes
 
     attr_reader :curr_path, :require_confirmation, :preview_only
 
