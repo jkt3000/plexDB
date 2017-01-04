@@ -27,9 +27,8 @@ class PlexDBCLI < Thor
 
   def rename(file)
     curr_path = Dir.pwd
-    file = File.expand_path(file)
-    files = []
-    files = File.exist?(file) && !File.directory?(file) ? [file] : Dir["#{file}/**/*"]
+    file      = File.expand_path(file)
+    files     = File.exist?(file) && !File.directory?(file) ? [file] : Dir["#{file}/**/*"].sort
 
     require_confirmation = !options.fetch(:force)
     preview_only         = options.fetch(:preview)
