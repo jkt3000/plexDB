@@ -18,18 +18,20 @@ module PlexDB
 
     def rename(file)
       return unless valid_file?(file)
-      return unless record = PlexDB.find_by_filename(File.basename(file))
+
+      print "Processing: #{file} "
+      if record = PlexDB.find_by_filename(File.basename(file))
+        puts "Plex entry: #{record.title}"
+      else
+        puts "NOT FOUND in Plex...skipping"
+        return
+      end
 
       new_file, new_path = process_record(record)
       old_path = File.dirname(file)
 
-
-      puts "\n#{file}"
-      puts "="*80
-      puts "Plex Record: #{new_file}"
-
       if file == File.join(new_path, new_file)
-        puts "No change required...skippping"
+        puts "No change required...skipping"
         return
       end
 
