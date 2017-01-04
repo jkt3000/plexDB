@@ -1,15 +1,3 @@
-# media_parts
-# :id
-# :media_item_id
-# :directory_id
-# :file           - file name/location of file
-# :index
-# :size
-# :duration
-# :created_at
-# :updated_at
-# :deleted_at
-
 require 'safe_attributes/base'
 
 class MediaPart < ActiveRecord::Base

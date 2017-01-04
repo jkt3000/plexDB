@@ -1,4 +1,0 @@
-class PlexMovie < PlexModel
-
-
-end
