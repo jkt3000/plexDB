@@ -45,19 +45,22 @@ class PlexModel
     PlexModel.new(params)
   end
 
-  # helpful attributes
-
+  # type    width     height
+  # -------------------------
+  # HQ      >= 3860   >= 2160
+  # 1080p   >= 1920   >= 1080
+  # 720p    >= 1280   >= 720
+  # SD      the rest
   def resolution
-    case dimension.split('x').last.to_i 
-      when (0..480)
-        "480p"
-      when (481..720)
-        "720p"
-      when (721..1080)
-        "1080p"
-      when (1081..2160)
-        "HQ"
-      else
+    width, height = dimension.split('x').map(&:to_i)
+    if width >= 3860 || height >= 2160
+      "HQ"
+    elsif width >= 1920 || height >= 1080
+      "1080p"
+    elsif width >= 1280 || height >= 720
+      "720p"
+    else
+      "SD"
     end
   end
 
