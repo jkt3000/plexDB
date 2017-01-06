@@ -1,114 +1,48 @@
 
 Tables
 
-# library_sections
-# id:
-# library_id:
-# name:
-# name_sort:
-# section_type:
-# language:
-# agent:
-# scanner:
-# user_thumb_url:
-# user_art_url:
-# user_theme_music_url:
-# public:
-# created_at:
-# updated_at:
-# scanned_at:
-# display_secondary_level:
-# user_fields:
-# query_type:
-# uuid:
+media_parts
+:id
+:media_item_id
+:directory_id
+:file           - file name/location of file
+:index
+:size
+:duration
+:created_at
+:updated_at
+:deleted_at
 
-# media_items
-# :id
-# :library_section_id
-# :section_location_id
-# :metadata_item_id
-# :type_id
-# :width
-# :height
-# :size
-# :duration
-# :bitrate
-# :container
-# :video_codec
-# :audio_codec
-# :display_aspect_ratio
-# :frames_per_second
-# :audio_channels
-# :interlaced
-# :source
-# :hints
-# :display_offset
-# :settings
-# :created_at
-# :updated_at
-# :optimized_for_streaming
-# :deleted_at
-# :media_analysis_version
-# :sample_aspect_ratio
-# :extra_data
-# :proxy_type
-
-# media_parts
-# :id
-# :media_item_id
-# :directory_id
-# :file           - file name/location of file
-# :index
-# :size
-# :duration
-# :created_at
-# :updated_at
-# :deleted_at
-
-# metadata_items
-# :id
-# :library_section_id
-# :parent_id
-# :metadata_type
-# :guid
-# :media_item_count
-# :title
-# :title_sort
-# :original_title
-# :studio
-# :rating
-# :rating_count
-# :tagline
-# :summary
-# :trivia
-# :quotes
-# :content_rating
-# :content_rating_age
-# :index
-# :absolute_index
-# :duration
-# :user_thumb_url
-# :user_art_url
-# :user_banner_url
-# :user_music_url
-# :user_fields
-# :tags_genre
-# :tags_collection
-# :tags_director
-# :tags_writer
-# :tags_star
-# :originally_available_at
-# :available_at
-# :expires_at
-# :refreshed_at
-# :year
-# :added_at
-# :created_at
-# :updated_at
-# :deleted_at
-# :tags_country
-# :extra_data
-
+media_items
+:id
+:library_section_id
+:section_location_id
+:metadata_item_id
+:type_id
+:width
+:height
+:size
+:duration
+:bitrate
+:container
+:video_codec
+:audio_codec
+:display_aspect_ratio
+:frames_per_second
+:audio_channels
+:interlaced
+:source
+:hints
+:display_offset
+:settings
+:created_at
+:updated_at
+:optimized_for_streaming
+:deleted_at
+:media_analysis_version
+:sample_aspect_ratio
+:extra_data
+:proxy_type
 
 sqlite> select * from media_parts where file LIKE '%Cell%';
 4634|2504|4131|b0294e96a04944bd50fc16fa401a0181196790b4|4e8418b5eddac33d|/volume1/video/TV/Agents of SHIELD/Season 1/Marvels.Agents.of.S.H.I.E.L.D.S01E17.HDTV.x264-EXCELLENCE.mp4||219754481|2503850|2014-12-08 18:59:51|2014-04-08 21:30:09||ma%3Acontainer=mp4&ma%3Ahas64bitOffsets=0&ma%3AoptimizedForStreaming=0
