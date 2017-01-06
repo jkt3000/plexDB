@@ -1,5 +1,6 @@
 class PlexModel
-  attr_reader :title, :year, :dimension, :ext, :type, :filename, :path, :season, :episode,
+  attr_reader :title, :year, :ext, :type, :filename, :path, :season, :episode,
+              :width, :height,
               :media_part,
               :metadata
 
@@ -8,7 +9,8 @@ class PlexModel
     params = ActiveSupport::HashWithIndifferentAccess.new(params)
     @title      = params.fetch(:title)
     @year       = params.fetch(:year, nil)
-    @dimension  = params.fetch(:dimension, nil)
+    @height     = params.fetch(:height, nil)
+    @width      = params.fetch(:width, nil)
     @ext        = params.fetch(:ext, nil)
     @type       = params.fetch(:type, nil)
     @filename   = params.fetch(:filename, nil)
@@ -30,11 +32,12 @@ class PlexModel
     params = {
       title: media_part.title,
       year:  media_part.year,
-      dimension: media_part.dimension,
       ext:   media_part.ext,
       type:  media_part.type,
       filename: media_part.filename,
       path: media_part.path,
+      height: media_part.height.to_i,
+      width: media_part.width.to_i,
       media_part: media_part,
       metadata: metadata
     }
@@ -52,7 +55,6 @@ class PlexModel
   # 720p    >= 1280   >= 720
   # SD      the rest
   def resolution
-    width, height = dimension.split('x').map(&:to_i)
     if width >= 3860 || height >= 2160
       "HQ"
     elsif width >= 1920 || height >= 1080

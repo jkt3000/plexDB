@@ -37,9 +37,10 @@ module PlexDB
 
       if require_confirmation?
         puts "Moving #{file} => #{File.join(new_path, new_file)}"
-        puts "Continue? [y/n]"
+        puts "Continue? [y/n/q]"
         
         value = STDIN.getch
+        exit if value.downcase == 'q'
         return unless value.downcase == "y"
       end
 
