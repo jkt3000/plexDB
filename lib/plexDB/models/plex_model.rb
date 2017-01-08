@@ -55,11 +55,11 @@ class PlexModel
   # 720p    >= 1280   >= 720
   # SD      the rest
   def resolution
-    if width >= 3860 || height >= 2160
+    if width >= 3800 || height >= 2100        # close to 3860 x 2160
       "HQ"
-    elsif width >= 1920 || height >= 1080
+    elsif width >= 1900 || height >= 1000 # close to 1920 x 1080
       "1080p"
-    elsif width >= 1280 || height >= 720
+    elsif width >= 1200 || height >= 700     # close to 1280 x 720
       "720p"
     else
       "SD"
