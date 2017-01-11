@@ -11,7 +11,7 @@ require_relative '../lib/plexDB'
 # - scp copy plex db from remote to local path
 # - startup plex again on remote host
 
-START_SCRIPT_CMD = "#{PlexDB::SETTINGS['remote_plex_script']} start &"
+START_SCRIPT_CMD = "#{PlexDB::SETTINGS['remote_plex_script']} start"
 STOP_SCRIPT_CMD  = "#{PlexDB::SETTINGS['remote_plex_script']} stop"
 LOCAL_DB         = PlexDB::SETTINGS['database']
 REMOTE_DB        = PlexDB::SETTINGS['remote_plex_database']
