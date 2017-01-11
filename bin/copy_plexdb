@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.dirname(__FILE__)
+
+require 'rubygems'
+require 'net/ssh'
+require 'net/scp'
+require_relative '../lib/plexDB'
+
+# script to ssh to:
+# - shutdown plex on remote host
+# - scp copy plex db from remote to local path
+# - startup plex again on remote host
+
+START_SCRIPT_CMD = "#{PlexDB::SETTINGS['remote_plex_script']} start &"
+STOP_SCRIPT_CMD  = "#{PlexDB::SETTINGS['remote_plex_script']} stop"
+LOCAL_DB         = PlexDB::SETTINGS['database']
+REMOTE_DB        = PlexDB::SETTINGS['remote_plex_database']
+REMOTE_HOST      = PlexDB::SETTINGS['remote_host']
+REMOTE_USER      = PlexDB::SETTINGS['remote_user']
+REMOTE_PASS      = PlexDB::SETTINGS['remote_password']
+
+# ssh and stop server
+puts "Sshing and stopping Plex Media Server"
+Net::SSH.start(REMOTE_HOST, REMOTE_USER, password: REMOTE_PASS) do |ssh|
+  output = ssh.exec!("sudo #{STOP_SCRIPT_CMD}")
+  puts output
+end
+
+# scp db to local path and overwrite existing
+puts "Copying plex database to #{LOCAL_DB}"
+Net::SCP.download!(REMOTE_HOST, REMOTE_USER,
+  REMOTE_DB, LOCAL_DB,
+  :ssh => { :password => REMOTE_PASS })
+puts "---> File copied"
+`ls -al #{LOCAL_DB}`
+
+# ssh and restart server
+puts "Sshing and restarting Plex Media Server"
+Net::SSH.start(REMOTE_HOST, REMOTE_USER, password: REMOTE_PASS) do |ssh|
+  output = ssh.exec!("sudo #{START_SCRIPT_CMD}")
+  puts output
+end
+
+
+puts "Done.\n\n"
