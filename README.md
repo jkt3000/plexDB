@@ -36,10 +36,16 @@ Set up your config file ```~/.plexDB_config.yml``` as noted below
 
 ## Usage
 
-    plexdb <command> 
+1. Copy plex's sqlite3 db to your local directory.
 
-To rename a file or a directory of files
+    ./bin/copy_plexdb
 
+2. Change working path to directory w/ movies you want to change
+
+3. Run plexdb command to rename
+
+    plex rename .
+    
     plex rename /path/of/movies <options>
 
 This will go through each file in the directory and find which ones are movies/tv shows, and preview the changes it will make. You will need to confirm each change, otherwise you can force override by supplying a ```-f``` option.
