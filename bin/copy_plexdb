@@ -11,18 +11,18 @@ require_relative '../lib/plexDB'
 # - scp copy plex db from remote to local path
 # - startup plex again on remote host
 
-START_SCRIPT_CMD = "#{PlexDB::SETTINGS['remote_plex_script']} start"
-STOP_SCRIPT_CMD  = "#{PlexDB::SETTINGS['remote_plex_script']} stop"
-LOCAL_DB         = PlexDB::SETTINGS['database']
-REMOTE_DB        = PlexDB::SETTINGS['remote_plex_database']
-REMOTE_HOST      = PlexDB::SETTINGS['remote_host']
-REMOTE_USER      = PlexDB::SETTINGS['remote_user']
-REMOTE_PASS      = PlexDB::SETTINGS['remote_password']
+START_CMD   = "#{PlexDB::SETTINGS['remote_plex_script']} start"
+STOP_CMD    = "#{PlexDB::SETTINGS['remote_plex_script']} stop"
+LOCAL_DB    = PlexDB::SETTINGS['database']
+REMOTE_DB   = PlexDB::SETTINGS['remote_plex_database']
+REMOTE_HOST = PlexDB::SETTINGS['remote_host']
+REMOTE_USER = PlexDB::SETTINGS['remote_user']
+REMOTE_PASS = PlexDB::SETTINGS['remote_password']
 
 # ssh and stop server
 puts "Sshing and stopping Plex Media Server"
 Net::SSH.start(REMOTE_HOST, REMOTE_USER, password: REMOTE_PASS) do |ssh|
-  output = ssh.exec!("sudo #{STOP_SCRIPT_CMD}")
+  output = ssh.exec!("sudo #{STOP_CMD}")
   puts output
 end
 
@@ -37,7 +37,7 @@ puts "---> File copied"
 # ssh and restart server
 puts "Sshing and restarting Plex Media Server"
 Net::SSH.start(REMOTE_HOST, REMOTE_USER, password: REMOTE_PASS) do |ssh|
-  output = ssh.exec!("sudo #{START_SCRIPT_CMD}")
+  output = ssh.exec!("sudo #{START_CMD}")
   puts output
 end
 
