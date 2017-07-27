@@ -27,6 +27,7 @@ module PlexDB
         return
       end
 
+      p [record.width, record.height, record.video_codec, record.audio_codec ].join(", ")
       new_file, new_path = process_record(record)
       old_path = File.dirname(file)
 

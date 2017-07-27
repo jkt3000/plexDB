@@ -1,2 +1,2 @@
-movie_template: "{{title}} ({{year}}) [{{resolution}}]{% if comments -%}[{{comments}}]{% endif %}/{{title}} ({{year}}) [{{resolution}}]{% if comments -%}[{{comments}}]{% endif %}.{{ext}}"
-tv_template: "{{title}} S{{season}}/{{title}} S{{season}}E{{episode}} [{{resolution}}].{{ext}}"
+movie_template: "{{title}} ({{year}}) [{{resolution}}]{% if video_codec || audio_code %} [{{video_codec}}{% if audio_codec && video_codec %}|{% endif %}{{audio_codec}}]{% endif %}{% if comments -%} [{{comments}}]{% endif %}/{{title}} ({{year}}) [{{resolution}}]{% if video_codec || audio_code %} [{{video_codec}}{% if audio_codec && video_codec %}|{% endif %}{{audio_codec}}]{% endif %}{% if comments -%}[{{comments}}]{% endif %}.{{ext}}"
+tv_template: "{{title}} S{{season}}/{{title}} S{{season}}E{{episode}} [{{resolution}}{% if video_codec %}|{{video_codec}}{% endif %}{% if audio_codec %}|{{audio_codec}}{% endif %}].{{ext}}"

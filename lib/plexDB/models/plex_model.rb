@@ -1,6 +1,6 @@
 class PlexModel
   attr_reader :title, :year, :ext, :type, :filename, :path, :season, :episode,
-              :width, :height,
+              :width, :height, :audio_codec, :video_codec,
               :media_part,
               :metadata
 
@@ -21,6 +21,8 @@ class PlexModel
 
     @media_part = params.fetch(:media_part, nil)
     @metadata   = params.fetch(:metadata, nil)
+    @audio_codec = params.fetch(:audio_codec, nil)    
+    @video_codec = params.fetch(:video_codec, nil)
   end
 
   # we can have lots of versions...
@@ -34,6 +36,8 @@ class PlexModel
       year:  media_part.year,
       ext:   media_part.ext,
       type:  media_part.type,
+      video_codec:media_part.media_item.video_codec,
+      audio_codec:media_part.media_item.audio_codec,
       filename: media_part.filename,
       path: media_part.path,
       height: media_part.height.to_i,
@@ -74,6 +78,8 @@ class PlexModel
       ext: ext,
       filename: filename,
       path: path,
+      audio_codec: audio_codec,
+      video_codec: video_codec,
       season: "%02d" % season.to_i,
       episode: "%02d" % episode.to_i     
     }.stringify_keys
